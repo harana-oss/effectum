@@ -54,6 +54,8 @@ impl Workers {
     }
 
     pub(crate) fn remove_worker(&mut self, worker_id: u64) -> Result<()> {
+        println!("REMOVING WORKER WITH ID: {}", worker_id);
+
         let worker = self
             .workers
             .remove(&worker_id)

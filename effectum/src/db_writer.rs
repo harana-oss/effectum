@@ -203,7 +203,7 @@ pub(crate) fn db_writer_worker(
     loop {
         operations.truncate(0);
 
-        info!("Processing {} operations", operations.len());
+        println!("Processing {} operations", operations.len());
 
         match operations_rx.blocking_recv() {
             Some(op) => operations.push(op),

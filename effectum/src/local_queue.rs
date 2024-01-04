@@ -76,7 +76,7 @@ impl Queue {
             .map_err(Error::open_database)?;
         conn.pragma_update(None, "synchronous", "normal")
             .map_err(Error::open_database)?;
-        conn.trace(Some(|msg|{ log::info!("{}", msg); }));
+        conn.trace(Some(|msg|{ println!("{}", msg); }));
 
         register_functions(&mut conn)?;
         crate::migrations::migrate(&mut conn)?;
@@ -93,7 +93,7 @@ impl Queue {
                         .await
                         .map_err(|e| HookError::Message(e.to_string().into()))?
                         .map_err(|e| HookError::Backend(e))?;
-                    conn.interact(|c| c.trace(Some(|msg|{ log::info!("{}", msg); }))).await;
+                    conn.interact(|c| c.trace(Some(|msg|{ println!("{}", msg); }))).await;
 
                     Ok(())
                 })
@@ -118,11 +118,11 @@ impl Queue {
         // Handle any jobs that were not cleanly finished from a previous run.
         handle_active_jobs_at_startup(&shared_state, options.job_recovery_behavior, &mut conn)?;
 
-        info!("Creating DB writer worker");
+        println!("Creating DB writer worker");
         let db_write_worker = {
             let shared_state = shared_state.clone();
             std::thread::spawn(move || {
-                info!("Spawning thread for DB writer worker");
+                println!("Spawning thread for DB writer worker");
                 db_writer_worker(conn, shared_state, db_write_rx)
             })
         };

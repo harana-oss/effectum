@@ -334,10 +334,10 @@ where
                     break;
                 }
                 _ = self.listener.notify_task_ready.notified(), if grab_new_jobs  => {
-                    event!(Level::TRACE, "New task ready");
+                    println!("New task ready");
                 }
                 _ = self.running_jobs.job_finished.notified() => {
-                    event!(Level::TRACE, "Job finished");
+                    println!("Job finished");
                 }
             }
         }
@@ -369,6 +369,8 @@ where
         let now = self.queue.time.now();
         event!(Level::TRACE, %now, current_running = %running_count, %max_concurrency, "Checking ready jobs");
 
+        println!("Currently Running = {}, Max Concurrency = {}, Max Jobs = {}", running_count, max_concurrency, max_jobs);
+
         let (result_tx, result_rx) = oneshot::channel();
         self.queue
             .db_write_tx
@@ -389,6 +391,8 @@ where
 
         let ready_jobs = result_rx.await.map_err(|_| Error::QueueClosed)??;
 
+        println!("Ready jobs = {}", ready_jobs.len());
+
         for job in ready_jobs {
             self.run_job(job).await?;
         }
@@ -404,6 +408,8 @@ where
             done_rx: mut done,
         }: ReadyJob,
     ) -> Result<()> {
+        println!("Running job as worker: {}", self.listener.id);
+
         let job_def = self
             .job_defs
             .get(job.job_type.as_str())

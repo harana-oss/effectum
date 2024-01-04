@@ -25,6 +25,7 @@ rusqlite = { version = "0.31.0", features = ["functions", "modern-full", "time",
 rusqlite_migration = "1.2.0"
 serde = { version = "1.0.188", features = ["derive"] }
 serde_json = { version = "1.0.107", features = ["raw_value"] }
+simple_logger = "4.3.3"
 smallvec = { version = "1.11.1", features = ["serde"] }
 smartstring = "1.0.1"
 thiserror = "1"
