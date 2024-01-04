@@ -187,7 +187,6 @@ impl Queue {
 
     /// Stop the queue, and wait for existing workers to finish.
     pub async fn close(&self, timeout: Duration) -> Result<()> {
-        println!("CLOSING THE QUEUE");
         let tasks = {
             let mut tasks_holder = self.tasks.lock().unwrap();
             tasks_holder.take()
@@ -204,6 +203,7 @@ impl Queue {
 impl Drop for Queue {
     /// Try to close the queue cleanly as it's dropped.
     fn drop(&mut self) {
+        println!("DROPPING THE QUEUE");
         let mut tasks = self.tasks.lock().unwrap();
         if let Some(tasks) = tasks.take() {
             tokio::spawn(Self::close_internal(

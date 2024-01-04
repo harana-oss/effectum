@@ -85,6 +85,7 @@ impl Worker {
 
 impl Drop for Worker {
     fn drop(&mut self) {
+        println!("DROPPING WORKER");
         if let Some(task) = self.worker_list_task.take() {
             event!(Level::INFO, worker_id = %self.id, "Unregistering worker");
             task.close_tx.send(()).ok();
