@@ -316,6 +316,7 @@ where
         loop {
             let mut running_jobs = self.running_jobs.current_weighted.load(Ordering::Relaxed);
             let min_concurrency = self.min_concurrency as u32;
+            println!("Running jobs = {} (and needs to be <) Min concurrency = {}", running_jobs, min_concurrency);
             if running_jobs < min_concurrency {
                 log_error(self.run_ready_jobs().await);
                 running_jobs = self.running_jobs.current_weighted.load(Ordering::Relaxed);
