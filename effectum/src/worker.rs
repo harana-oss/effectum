@@ -327,10 +327,12 @@ where
             tokio::select! {
                 biased;
                 _ = &mut close_rx => {
+                    println!("close_rx => SHUTDOWN");
                     log_error(self.shutdown().await);
                     break;
                 }
                 _ = global_close_rx.changed() => {
+                    println!("global_close_rx => SHUTDOWN");
                     log_error(self.shutdown().await);
                     break;
                 }
