@@ -22,7 +22,7 @@ futures = "0.3.28"
 once_cell = "1.18.0"
 rand = "0.8.5"
 rusqlite = { version = "0.31.0", features = ["functions", "modern-full", "time", "blob", "array"] }
-rusqlite_migration = "1.2.0"
+rusqlite_migration = "1.3.1"
 serde = { version = "1.0.188", features = ["derive"] }
 serde_json = { version = "1.0.107", features = ["raw_value"] }
 simple_logger = "4.3.3"
